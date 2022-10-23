@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-//todo 1
 class Babies with ChangeNotifier {
   final int age;
 
@@ -8,7 +7,6 @@ class Babies with ChangeNotifier {
     required this.age,
   });
 
-  //todo 2 (next main.dart)
   Future<int> getBabies() async {
     await Future.delayed(
       const Duration(seconds: 3),
@@ -20,6 +18,17 @@ class Babies with ChangeNotifier {
       return 0;
     } else {
       return 2;
+    }
+  }
+
+  //todo 1 (next main.dart)
+  Stream<String> bark() async* {
+    for (var i = 1; i < age; i++) {
+      await Future.delayed(
+        const Duration(seconds: 2),
+      );
+
+      yield 'Bark $i times';
     }
   }
 }

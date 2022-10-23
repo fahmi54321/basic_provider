@@ -14,13 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      //todo 3
       providers: [
         ChangeNotifierProvider(
           create: (_) => Dog(name: 'dog', breed: 'breed'),
         ),
         FutureProvider(
-          // todo 4
           initialData: 0,
           create: (context) {
             final int dogAge = context.read<Dog>().age;
@@ -28,6 +26,14 @@ class MyApp extends StatelessWidget {
             return babies.getBabies();
           },
         ),
+        StreamProvider(
+            //todo 2
+            create: (context) {
+              final int dogAge = context.read<Dog>().age;
+              final babies = Babies(age: dogAge * 2);
+              return babies.bark();
+            },
+            initialData: 'Bark 0 times')
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -107,10 +113,18 @@ class Age extends StatelessWidget {
         ),
         const SizedBox(height: 20.0),
         Text(
-          '- number of babies : ${context.watch<int>()}', // todo 5 (finish)
+          '- number of babies : ${context.watch<int>()}',
           // '- number of babies : ${context.read<int>()}',
         ),
         const SizedBox(height: 10.0),
+        Text(
+          //todo 3 (finish)
+          '- ${context.watch<String>()}',
+          style: const TextStyle(
+            fontSize: 20.0,
+          ),
+        ),
+        const SizedBox(height: 20.0),
         ElevatedButton(
           onPressed: () => context.read<Dog>().grow(),
           // onPressed: () => context.watch<Dog>().grow(),
