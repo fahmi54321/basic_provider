@@ -1,4 +1,6 @@
+import 'package:basic_provider/models/dog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +12,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Provider(
+      //todo 2
+      create: (context) => Dog(
+        name: 'Sun',
+        breed: 'Bulldog',
+        age: 3,
       ),
-      home: const MyHomePage(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MyHomePage(),
+      ),
     );
   }
 }
@@ -28,14 +38,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  //todo 1
-  int counter = 0;
-  void increment() {
-    setState(() {
-      counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,24 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              color: Colors.blue[100],
-              padding: const EdgeInsets.all(20.0),
-              child: const Text(
-                'MyHomePage',
-                style: TextStyle(fontSize: 24.0),
-              ),
+            Text(
+              '- name: ${Provider.of<Dog>(context).name}', //todo 3
+              style: const TextStyle(fontSize: 20.0),
             ),
-            const SizedBox(height: 20.0),
-            CounterA( //todo 2
-              counter: counter,
-              increment: increment,
-            ),
-            const SizedBox(height: 20.0),
-            Middle( //todo 3
-              counter: counter,
-            ),
+            const SizedBox(height: 10.0),
+            BreedAndAge(),
           ],
         ),
       ),
@@ -70,96 +62,47 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class CounterA extends StatelessWidget {
-  final int counter; //todo 4
-  final void Function() increment; // todo 5
-  const CounterA({
-    super.key,
-    required this.counter,
-    required this.increment,
-  });
+class BreedAndAge extends StatelessWidget {
+  const BreedAndAge({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red[100],
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          Text(
-            '$counter', //todo 6
-            style: const TextStyle(fontSize: 48.0),
-          ),
-          ElevatedButton(
-            onPressed: increment,
-            child: const Text(
-              'Increment',
-              style: TextStyle(fontSize: 20.0),
+    return Column(
+      children: [
+        Text(
+          '- breed : ${Provider.of<Dog>(context).breed}', //todo 4
+          style: const TextStyle(fontSize: 20.0),
+        ),
+        const SizedBox(height: 10.0),
+        const Age(),
+      ],
+    );
+  }
+}
+
+class Age extends StatelessWidget {
+  const Age({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          '- age : ${Provider.of<Dog>(context).age}', //todo 5
+          style: const TextStyle(fontSize: 20.0),
+        ),
+        const SizedBox(height: 20.0),
+        ElevatedButton(
+          onPressed: () =>
+              Provider.of<Dog>(context, listen: false).grow(), //todo 6 (finish)
+          child: const Text(
+            'Grow',
+            style: TextStyle(
+              fontSize: 20.0,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class Middle extends StatelessWidget {
-  final int counter; //tofo 7
-  const Middle({
-    super.key,
-    required this.counter,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[200],
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CounterB(counter: counter), //todo 8
-          const SizedBox(width: 20.0),
-          Sibling(),
-        ],
-      ),
-    );
-  }
-}
-
-class CounterB extends StatelessWidget {
-  final int counter; //todo 9
-  const CounterB({
-    super.key,
-    required this.counter,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow[100],
-      padding: EdgeInsets.all(10.0),
-      child: Text(
-        '$counter',// todo 10 (finish)
-        style: const TextStyle(fontSize: 24.0),
-      ),
-    );
-  }
-}
-
-class Sibling extends StatelessWidget {
-  const Sibling({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.orange[100],
-      padding: const EdgeInsets.all(10.0),
-      child: const Text(
-        'Sibling',
-        style: TextStyle(fontSize: 24.0),
-      ),
+        )
+      ],
     );
   }
 }
