@@ -12,12 +12,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp( //todo 3
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      //todo 1
+      create: (_) => Dog(name: 'dog', breed: 'breed'),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const MyHomePage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
@@ -30,24 +34,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final dog = Dog(name: 'dogs', breed: 'breed'); //todo 4
-
-  @override
-  void initState() { //todo 5
-    super.initState();
-    dog.addListener(dogListener);
-  }
-
-  void dogListener() { //todo 6
-    print('age : ${dog.age}');
-  }
-
-  @override
-  void dispose() { //todo 7
-    dog.removeListener(dogListener);
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,11 +46,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '- name: ${dog.name}', //todo 8
+              '- name: ${Provider.of<Dog>(context).name}', //todo 2
               style: const TextStyle(fontSize: 20.0),
             ),
             const SizedBox(height: 10.0),
-            BreedAndAge(dog: dog), //todo 9
+            BreedAndAge(),
           ],
         ),
       ),
@@ -73,10 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class BreedAndAge extends StatelessWidget {
-  final Dog dog; //todo 10
   const BreedAndAge({
     super.key,
-    required this.dog,
   });
 
   @override
@@ -84,21 +68,19 @@ class BreedAndAge extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '- breed : ${dog.breed}', //todo 11
+          '- breed : ${Provider.of<Dog>(context).breed}', //todo 3
           style: const TextStyle(fontSize: 20.0),
         ),
         const SizedBox(height: 10.0),
-        Age(dog: dog), // todo 12
+        Age(),
       ],
     );
   }
 }
 
 class Age extends StatelessWidget {
-  final Dog dog; //todo 13
   const Age({
     super.key,
-    required this.dog,
   });
 
   @override
@@ -106,12 +88,13 @@ class Age extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '- age : ${dog.age}', //todo 14
+          '- age : ${Provider.of<Dog>(context).age}', //todo 4
           style: const TextStyle(fontSize: 20.0),
         ),
         const SizedBox(height: 20.0),
         ElevatedButton(
-          onPressed: () => dog.grow(), //todo 15 (finish)
+          onPressed: () =>
+              Provider.of<Dog>(context, listen: false).grow(), //todo 5 (finish)
           child: const Text(
             'Grow',
             style: TextStyle(
