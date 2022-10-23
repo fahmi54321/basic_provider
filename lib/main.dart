@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      //todo 1
       create: (_) => Dog(name: 'dog', breed: 'breed'),
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -46,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              '- name: ${Provider.of<Dog>(context).name}', //todo 2
+              '- name: ${context.read<Dog>().name}', // todo 1
               style: const TextStyle(fontSize: 20.0),
             ),
             const SizedBox(height: 10.0),
@@ -68,7 +67,7 @@ class BreedAndAge extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '- breed : ${Provider.of<Dog>(context).breed}', //todo 3
+          '- breed : ${context.select((Dog val) => val.breed)}', //todo 2
           style: const TextStyle(fontSize: 20.0),
         ),
         const SizedBox(height: 10.0),
@@ -88,13 +87,13 @@ class Age extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '- age : ${Provider.of<Dog>(context).age}', //todo 4
+          '- age : ${context.select((Dog val) => val.age)}', //todo 3
           style: const TextStyle(fontSize: 20.0),
         ),
         const SizedBox(height: 20.0),
         ElevatedButton(
-          onPressed: () =>
-              Provider.of<Dog>(context, listen: false).grow(), //todo 5 (finish)
+          onPressed: () => context.read<Dog>().grow(), // todo 4 (finish)
+          // onPressed: () => context.watch<Dog>().grow(),
           child: const Text(
             'Grow',
             style: TextStyle(
