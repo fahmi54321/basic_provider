@@ -21,7 +21,6 @@ class Babies with ChangeNotifier {
     }
   }
 
-  //todo 1 (next main.dart)
   Stream<String> bark() async* {
     for (var i = 1; i < age; i++) {
       await Future.delayed(
