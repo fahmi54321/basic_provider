@@ -25,34 +25,30 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider(
-        //todo 1
         create: (context) => Counter(),
         child: MyHomePage(),
       ),
-
-      //todo 3
-
-      // error
-      // routes: {
-      //   '/': (context) => MyHomePage(),
-      //   'counter': (context) => ShowMeCounter(),
-      // },
-
-      // tidak error
-      routes: {
-        '/': (context) => ChangeNotifierProvider.value(
-              value: _counter,
-              child: MyHomePage(),
-            ),
-        'counter': (context) => ChangeNotifierProvider.value(
-              value: _counter,
-              child: ShowMeCounter(),
-            ),
+      onGenerateRoute: (RouteSettings settings) { //todo 1 (finish)
+        switch (settings.name) {
+          case '/':
+            return MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider.value(
+                value: _counter,
+                child: MyHomePage(),
+              ),
+            );
+          case 'counter':
+            return MaterialPageRoute(
+              builder: (context) => ChangeNotifierProvider.value(
+                value: _counter,
+                child: ShowMeCounter(),
+              ),
+            );
+        }
       },
     );
   }
 
-  // todo 4 (finish)
   @override
   void dispose() {
     _counter.dispose();
@@ -80,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, 'counter'); //todo 2
+                Navigator.pushNamed(context, 'counter');
               },
               child: const Text(
                 'Show Me Counter',
