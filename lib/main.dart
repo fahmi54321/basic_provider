@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _counter = Counter();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,11 +25,38 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider(
-        //todo 2
+        //todo 1
         create: (context) => Counter(),
         child: MyHomePage(),
       ),
+
+      //todo 3
+
+      // error
+      // routes: {
+      //   '/': (context) => MyHomePage(),
+      //   'counter': (context) => ShowMeCounter(),
+      // },
+
+      // tidak error
+      routes: {
+        '/': (context) => ChangeNotifierProvider.value(
+              value: _counter,
+              child: MyHomePage(),
+            ),
+        'counter': (context) => ChangeNotifierProvider.value(
+              value: _counter,
+              child: ShowMeCounter(),
+            ),
+      },
     );
+  }
+
+  // todo 4 (finish)
+  @override
+  void dispose() {
+    _counter.dispose();
+    super.dispose();
   }
 }
 
@@ -47,37 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () {
-                //todo 4 (finish)
-
-                //error 1
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ShowMeCounter(),
-                //   ),
-                // );
-
-                //error 2
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ChangeNotifierProvider.value(
-                //       value: context.read<Counter>(),
-                //       child: ShowMeCounter(),
-                //     ),
-                //   ),
-                // );
-
-                // tidak error
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (counterContext) => ChangeNotifierProvider.value(
-                      value: context.read<Counter>(),
-                      child: ShowMeCounter(),
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, 'counter'); //todo 2
               },
               child: const Text(
                 'Show Me Counter',
@@ -89,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                context.read<Counter>().increment(); //todo 3
+                context.read<Counter>().increment();
               },
               child: const Text(
                 'Increment Counter',
