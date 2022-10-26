@@ -1,5 +1,5 @@
-import 'package:basic_provider/models/babies.dart';
-import 'package:basic_provider/models/dog.dart';
+import 'package:basic_provider/counter.dart';
+import 'package:basic_provider/show_me_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,33 +13,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => Dog(name: 'dog', breed: 'breed'),
-        ),
-        FutureProvider(
-          initialData: 0,
-          create: (context) {
-            final int dogAge = context.read<Dog>().age;
-            final babies = Babies(age: dogAge);
-            return babies.getBabies();
-          },
-        ),
-        StreamProvider(
-            create: (context) {
-              final int dogAge = context.read<Dog>().age;
-              final babies = Babies(age: dogAge * 2);
-              return babies.bark();
-            },
-            initialData: 'Bark 0 times')
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MyHomePage(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ChangeNotifierProvider(
+        //todo 2
+        create: (context) => Counter(),
+        child: MyHomePage(),
       ),
     );
   }
@@ -59,78 +41,64 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('My Counter'),
       ),
-      body: Consumer(builder: (BuildContext context, Dog dog, _) {
-        //todo 1
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '- name: ${dog.name}', //todo 2
-                style: const TextStyle(fontSize: 20.0),
-              ),
-              const SizedBox(height: 10.0),
-              BreedAndAge(),
-            ],
-          ),
-        );
-      }),
-    );
-  }
-}
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                //todo 4 (finish)
 
-class BreedAndAge extends StatelessWidget {
-  const BreedAndAge({
-    super.key,
-  });
+                //error 1
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => ShowMeCounter(),
+                //   ),
+                // );
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (BuildContext context, Dog dog, _) {
-      //todo 3
-      return Column(
-        children: [
-          Text(
-            '- breed : ${dog.breed}', //todo 4
-            style: const TextStyle(fontSize: 20.0),
-          ),
-          const SizedBox(height: 10.0),
-          Age(),
-        ],
-      );
-    });
-  }
-}
+                //error 2
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => ChangeNotifierProvider.value(
+                //       value: context.read<Counter>(),
+                //       child: ShowMeCounter(),
+                //     ),
+                //   ),
+                // );
 
-class Age extends StatelessWidget {
-  const Age({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (BuildContext context, Dog dog, _) {
-      //todo 5
-      return Column(
-        children: [
-          Text(
-            '- age : ${dog.age}', //todo 6
-            style: const TextStyle(fontSize: 20.0),
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: () => dog.grow(), //todo 7 (finish)
-            // onPressed: () => dog.grow(),
-            child: const Text(
-              'Grow',
-              style: TextStyle(
-                fontSize: 20.0,
+                // tidak error
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (counterContext) => ChangeNotifierProvider.value(
+                      value: context.read<Counter>(),
+                      child: ShowMeCounter(),
+                    ),
+                  ),
+                );
+              },
+              child: const Text(
+                'Show Me Counter',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
               ),
             ),
-          )
-        ],
-      );
-    });
+            const SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                context.read<Counter>().increment(); //todo 3
+              },
+              child: const Text(
+                'Increment Counter',
+                style: TextStyle(fontSize: 20.0),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
