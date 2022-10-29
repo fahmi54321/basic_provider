@@ -1,5 +1,4 @@
-import 'package:basic_provider/counter.dart';
-import 'package:basic_provider/show_me_counter.dart';
+import 'package:basic_provider/why_proxy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,15 +6,8 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  final _counter = Counter();
 
   @override
   Widget build(BuildContext context) {
@@ -24,35 +16,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider(
-        create: (context) => Counter(),
-        child: MyHomePage(),
-      ),
-      onGenerateRoute: (RouteSettings settings) { //todo 1 (finish)
-        switch (settings.name) {
-          case '/':
-            return MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider.value(
-                value: _counter,
-                child: MyHomePage(),
-              ),
-            );
-          case 'counter':
-            return MaterialPageRoute(
-              builder: (context) => ChangeNotifierProvider.value(
-                value: _counter,
-                child: ShowMeCounter(),
-              ),
-            );
-        }
-      },
+      home: MyHomePage(),
     );
-  }
-
-  @override
-  void dispose() {
-    _counter.dispose();
-    super.dispose();
   }
 }
 
@@ -68,34 +33,33 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Counter'),
+        title: Text('Proxy provider'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'counter');
-              },
-              child: const Text(
-                'Show Me Counter',
-                style: TextStyle(
-                  fontSize: 20.0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              ElevatedButton(
+                //todo 1 (next why_proxy_provider.dart)
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WhyProxyProvider(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Why\nProxyProvider',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                context.read<Counter>().increment();
-              },
-              child: const Text(
-                'Increment Counter',
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
