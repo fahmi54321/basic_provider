@@ -1,3 +1,4 @@
+import 'package:basic_provider/create_update_proxy_provider.dart';
 import 'package:basic_provider/why_proxy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,12 +43,29 @@ class _MyHomePageState extends State<MyHomePage> {
             shrinkWrap: true,
             children: [
               ElevatedButton(
-                //todo 1 (next why_proxy_provider.dart)
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => WhyProxyProvider(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'ProxyProvider\nCreate Update',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              ElevatedButton(
+                //todo 1 (next create_update_proxy_provider.dart)
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateUpdateProxyProvider(),
                     ),
                   );
                 },
