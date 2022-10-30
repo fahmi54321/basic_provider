@@ -1,3 +1,4 @@
+import 'package:basic_provider/change_notifier_proxy_provider.dart';
 import 'package:basic_provider/create_update_proxy_provider.dart';
 import 'package:basic_provider/multi_provider.dart';
 import 'package:basic_provider/why_proxy_provider.dart';
@@ -53,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: const Text(
-                  'ProxyProvider\nCreate Update',
+                  'Why Proxy Provider',
                   style: TextStyle(
                     fontSize: 20.0,
                   ),
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: const Text(
-                  'Why\nProxyProvider',
+                  'Create and Update',
                   style: TextStyle(
                     fontSize: 20.0,
                   ),
@@ -78,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 20.0),
               ElevatedButton(
-                //todo 1 (next multi_proxy_provider.dart)
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -88,7 +88,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: const Text(
-                  'Why\nProxyProvider',
+                  'Multi Providers',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              ElevatedButton(
+                //todo 1 (next change_notifier_proxy_provider.dart)
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ChangeNotifierProxyProviderExample(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Change Notifier Proxy Provider',
                   style: TextStyle(
                     fontSize: 20.0,
                   ),
