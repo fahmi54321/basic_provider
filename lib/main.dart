@@ -1,6 +1,7 @@
 import 'package:basic_provider/change_notifier_proxy_provider.dart';
 import 'package:basic_provider/create_update_proxy_provider.dart';
 import 'package:basic_provider/multi_provider.dart';
+import 'package:basic_provider/proxy_providers.dart';
 import 'package:basic_provider/why_proxy_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 20.0),
               ElevatedButton(
-                //todo 1 (next change_notifier_proxy_provider.dart)
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -108,6 +108,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: const Text(
                   'Change Notifier Proxy Provider',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+              ElevatedButton(
+                //todo 1 (next proxy_provider.dart)
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProxyProviderExample(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Proxy Provider',
                   style: TextStyle(
                     fontSize: 20.0,
                   ),
