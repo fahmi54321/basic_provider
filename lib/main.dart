@@ -1,8 +1,5 @@
-import 'package:basic_provider/change_notifier_proxy_provider.dart';
-import 'package:basic_provider/create_update_proxy_provider.dart';
-import 'package:basic_provider/multi_provider.dart';
-import 'package:basic_provider/proxy_providers.dart';
-import 'package:basic_provider/why_proxy_provider.dart';
+import 'package:basic_provider/counter_page.dart';
+import 'package:basic_provider/providers/counter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (_) => Counter(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(),
       ),
-      home: MyHomePage(),
     );
   }
 }
@@ -46,89 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
             shrinkWrap: true,
             children: [
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WhyProxyProvider(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Why Proxy Provider',
-                  style: TextStyle(
-                    fontSize: 20.0,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => CounterPage(),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateUpdateProxyProvider(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Create and Update',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MultiProviders(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Multi Providers',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ChangeNotifierProxyProviderExample(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Change Notifier Proxy Provider',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                //todo 1 (next proxy_provider.dart)
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProxyProviderExample(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Proxy Provider',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
+                child: Text(
+                  'Counter Page',
+                  style: TextStyle(fontSize: 20.0),
                 ),
               ),
             ],
